@@ -63,6 +63,9 @@
 - (void)showdetail
 {
     NSLog(@"show detail");
+    UIViewController *vc = [[UIViewController alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [((UIViewController *)self.delegate).navigationController pushViewController:vc animated:YES];
 }
 
 - (void) setTopic:(NSDictionary *)topic
