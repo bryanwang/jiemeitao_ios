@@ -10,4 +10,5 @@
 
 @interface VoteCell : UITableViewCell
 @property (nonatomic, retain) NSDictionary *topic;
+@property (nonatomic, strong) id delegate;
 @end

@@ -94,6 +94,7 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.topic = [self.topics objectAtIndex:indexPath.row];
+    cell.delegate = self;
     return cell;
 }
 

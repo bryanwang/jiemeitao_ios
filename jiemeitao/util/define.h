@@ -34,6 +34,8 @@
 #define COUNT_VIEW_HEIGHT 45.0f
 #define SEP_HEIGHT 12.0f
 
+#define MESSAGE_DRU 1.0f
+
 #define DEFAULT_BG [UIImage imageNamed:@"bg-default"]
 
 

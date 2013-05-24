@@ -8,6 +8,7 @@
 
 #import "VoteCell.h"
 #import <QuartzCore/QuartzCore.h>
+#import "AppDelegate.h"
 
 @interface VoteCell()
 @property (retain, nonatomic) IBOutlet UIImageView *avatar;
@@ -39,14 +40,29 @@
 
 - (void)likeButtonTapped: (UIButton*)button
 {
-    NSString *topicid = self.topic[@"id"];
+//    NSString *topicid = self.topic[@"id"];
     NSLog(@"like");
+    [TSMessage showNotificationInViewController:self.delegate
+                                      withTitle:NSLocalizedString(@"vote succ", @"")
+                                    withMessage:nil
+                                       withType:TSMessageNotificationTypeSuccess
+                                    withDuration:MESSAGE_DRU];
 }
 
 - (void)hateButtonTapped: (UIButton*)button
 {
-    NSString *topicid = self.topic[@"id"];
+//    NSString *topicid = self.topic[@"id"];
     NSLog(@"hate");
+    [TSMessage showNotificationInViewController:self.delegate
+                                      withTitle:NSLocalizedString(@"vote succ", @"")
+                                    withMessage:nil
+                                       withType:TSMessageNotificationTypeSuccess
+                                   withDuration:MESSAGE_DRU];
+}
+
+- (void)showdetail
+{
+    NSLog(@"show detail");
 }
 
 - (void) setTopic:(NSDictionary *)topic
@@ -72,23 +88,23 @@
             [v addSubview:i];
             
             //buttons
-            CGRect b1 = {10.0f, 265.0f, 49.0f, 49.0f};
+            CGRect b1 = {10.0f, 265.0f + MARGIN_HEIGHT, 49.0f, 49.0f};
             UIButton *like = [UIButton buttonWithType:UIButtonTypeCustom];
             like.frame = b1;
             [like setBackgroundImage:[UIImage imageNamed:@"btn-choice-like-nor"] forState:UIControlStateNormal];
-            [like addTarget:self action:@selector(likeButtonTapped:) forControlEvents:UIControlEventTouchDown];
-            CGRect b2 = {262.0f, 265.0f, 49.0f, 49.0f};
+            CGRect b2 = {262.0f, 265.0f + MARGIN_HEIGHT, 49.0f, 49.0f};
             UIButton *hate = [UIButton buttonWithType:UIButtonTypeCustom];
             hate.frame = b2;
             [hate setBackgroundImage:[UIImage imageNamed:@"btn-choice-hate-nor"] forState:UIControlStateNormal];
-            [hate addTarget:self action:@selector(hateButtonTapped:) forControlEvents:UIControlEventTouchDown];
             
-            [v addSubview:like];
-            [v addSubview:hate];
-                    
+            [like addTarget:self action:@selector(likeButtonTapped:) forControlEvents:UIControlEventTouchDown];
+            [hate addTarget:self action:@selector(hateButtonTapped:) forControlEvents:UIControlEventTouchDown];
+
             [self addSubview:v];
             [self sendSubviewToBack:v];
-            
+            [self addSubview:like];
+            [self addSubview:hate];
+
             height = height + CELL_WIDTH;
         }
         else {
@@ -104,20 +120,21 @@
                 [v addSubview:i];
                 
                 //buttons
-                CGRect b1 = {10.0f, 105.0f, 49.0f, 49.0f};
+                CGRect b1 = {10.0f + (index % 2) * CELL_WIDTH / 2, 105.0f + MARGIN_HEIGHT + (index / 2) * (CELL_WIDTH / 2),  49.0f, 49.0f};
                 UIButton *like = [UIButton buttonWithType:UIButtonTypeCustom];
                 like.frame = b1;
                 [like setBackgroundImage:[UIImage imageNamed:@"btn-choice-like-nor"] forState:UIControlStateNormal];
                 [like addTarget:self action:@selector(likeButtonTapped:) forControlEvents:UIControlEventTouchDown];
-                [v addSubview:like];
-                
+
                 [self addSubview:v];
                 [self sendSubviewToBack:v];
+                [self addSubview:like];
             }];
             
             height = height + ([topic[@"image"] count] + 2 - 1) / 2 * (CELL_WIDTH / 2);
         }
         
+    
         //count
         CGRect r3 = {{0.0f, height}, {CELL_WIDTH, COUNT_VIEW_HEIGHT}};
         UIView *cv = [[UIView alloc]initWithFrame:r3];
@@ -136,16 +153,19 @@
         l.textColor  = RGBCOLOR(100, 100, 100);
         l.font = [UIFont systemFontOfSize:18.0f];
         l.text =[NSString stringWithFormat:@"%@ 张投票", [topic objectForKey:@"par_count"], nil];
-        
         [cv addSubview:l];
-        [self addSubview: cv];
         
         UIImage *arrow = [UIImage imageNamed:@"img-arrow"];
         UIImageView *arrowv = [[UIImageView alloc]initWithImage:arrow];
         arrowv.frame = CGRectMake(300.0f, 16.0f, arrow.size.width, arrow.size.height);
         [cv addSubview:arrowv];
-
+        [self addSubview: cv];
         
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showdetail)];
+        tap.numberOfTapsRequired = 1;
+        cv.userInteractionEnabled = YES;
+        [cv addGestureRecognizer:tap];
+
         height = height + COUNT_VIEW_HEIGHT;
         
         //sep

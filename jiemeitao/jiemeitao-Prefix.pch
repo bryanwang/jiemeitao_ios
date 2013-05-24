@@ -23,5 +23,6 @@
     #import <AFNetworking/UIImageView+AFNetworking.h>
 
     #import "BBCustomBackButtonViewController.h"
+    #import <TSMessage.h>
     #import "Utils.h"
 #endif
