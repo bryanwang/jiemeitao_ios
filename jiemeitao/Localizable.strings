@@ -1,8 +1,11 @@
 /****************************************************************************/
 /* Localization file */
 
-"choose photo" = "choose photo";
-"cancel" = "cancel";
-"take photo from camera" = "take photo from camera";
-"take photo from library" = "take photo from library";
-"vote succ" = "vote succ";
+"choose photo" = "选择照片";
+"cancel" = "取消";
+"take photo from camera" = "拍摄一张照片";
+"take photo from library" = "从图片库选择";
+"vote succ" = "投票成功";
+"my initiated votes" = "我发起的投票";
+"my received votes" = "我参与的投票";
+"my received invitations" = "我收到的邀请";
