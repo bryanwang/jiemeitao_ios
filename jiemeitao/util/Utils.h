@@ -12,6 +12,13 @@
 
 @end
 
+@interface NSObject(JMT)
+
+- (void)receiveObject:(void(^)(id object))sendObject withIdentifier:(NSString *)identifier;
+- (void)sendObject:(id)object withIdentifier:(NSString *)identifier;
+
+@end
+
 @interface JMTHttpClient : AFHTTPClient
 
 + (JMTHttpClient *)shareIntance;

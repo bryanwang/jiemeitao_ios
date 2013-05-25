@@ -125,15 +125,20 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   
+    NSDictionary *invitation = [[self.invitations objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if (self.invitationItemTappedBlock)
+        self.invitationItemTappedBlock(invitation);
 }
 
 - (void)tableView: (UITableView*)tableView willDisplayCell: (UITableViewCell*)cell forRowAtIndexPath: (NSIndexPath*)indexPath
 {
-    UIView *view = [[UIView alloc]initWithFrame:cell.bounds];
-    cell.backgroundColor = RGBCOLOR(255, 255, 255);
-    cell.backgroundView  = view;
-    cell.selectedBackgroundView = cell.backgroundView;
+    UIView *nor = [[UIView alloc]initWithFrame:cell.bounds];
+    nor.backgroundColor = RGBCOLOR(255, 248, 248);
+    cell.backgroundView  = nor;
+    
+    UIView *sel = [[UIView alloc]initWithFrame:cell.bounds];
+    sel.backgroundColor = RGBCOLOR(255, 255, 255);
+    cell.selectedBackgroundView = sel;
 }
 
 @end

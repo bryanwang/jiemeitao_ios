@@ -34,10 +34,12 @@
 #define COUNT_VIEW_HEIGHT 45.0f
 #define SEP_HEIGHT 12.0f
 #define SECTION_HEIGHT 23.0f
-
 #define MESSAGE_DRU 1.0f
 
 #define DEFAULT_BG [UIImage imageNamed:@"bg-default"]
+
+//msg
+#define SHOW_INVITATION_MSG @"show invitation"
 
 
 //获取View的x、y、宽度、高度

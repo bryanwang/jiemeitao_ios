@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+//typedef void (^ VoteCellTappedBlock )(id topic);
+
 @interface VoteCell : UITableViewCell
 @property (nonatomic, retain) NSDictionary *topic;
 @property (nonatomic, strong) id delegate;
+//@property (nonatomic, strong) VoteCellTappedBlock voteCellTappedBlock;
+
 @end

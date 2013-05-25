@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^ InvitationItemTappedBlock )(id invitation);
+
 @interface ReceivedInvitationsTableViewController : UITableViewController
+
+@property (nonatomic, strong) InvitationItemTappedBlock invitationItemTappedBlock;
 
 @end

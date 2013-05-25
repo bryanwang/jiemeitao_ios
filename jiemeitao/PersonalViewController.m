@@ -22,6 +22,14 @@
 {
     if (_receivedInvitationsTableViewController == nil) {
         _receivedInvitationsTableViewController = [[ReceivedInvitationsTableViewController alloc]init];
+        
+        __block PersonalViewController *pc = self;
+        _receivedInvitationsTableViewController.invitationItemTappedBlock = ^(id invitation) {
+            //todo: push detail view controller
+            UIViewController *vc = [[UIViewController alloc] init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [pc.navigationController pushViewController:vc animated:YES];
+        };
     }
     
     return _receivedInvitationsTableViewController;
@@ -47,11 +55,19 @@
                 break;
             case 1:
                 break;
-            case 2:
+        case 2:
                 tableivew = self.receivedInvitationsTableViewController.tableView;
     }
     
     [self addTableViewToSelfView:tableivew];
+}
+
+- (void)registerTableViewMessage
+{
+    if (tableivew == nil) return;
+    [tableivew receiveObject:^(id obj) {
+        NSLog(@"%@", obj);
+    } withIdentifier: SHOW_INVITATION_MSG];
 }
 
 - (void)generateSegmentedControl
@@ -99,8 +115,8 @@
     segmentedControl.buttonsArray = @[btn1, btn2, btn3];
     self.navigationItem.titleView = segmentedControl;
     [segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
-
     [segmentedControl setSelectedIndex:2];
+    
     tableivew = self.receivedInvitationsTableViewController.tableView;
     [self addTableViewToSelfView:tableivew];
 }
