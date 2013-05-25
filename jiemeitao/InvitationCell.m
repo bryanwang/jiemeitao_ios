@@ -34,7 +34,6 @@
     if (![_invitation isEqualToDictionary:invitation]) {
         [self.avatar setImageWithURL:[NSURL URLWithString:invitation[@"user"][@"avatar"]] placeholderImage:nil];
         self.name.text = invitation[@"user"][@"name"];
-        self.create_at.text = invitation[@"create_time_ex"];
     }
 }
 
