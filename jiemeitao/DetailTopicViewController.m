@@ -140,8 +140,8 @@
 //init like and unlike
 - (void)initLike
 {
-    CGRect b1 = {10.0f, 200.0f + MARGIN_HEIGHT, 49.0f, 49.0f};
-    CGRect b2 = {260.0f, 200.0f + MARGIN_HEIGHT, 49.0f, 49.0f};
+    CGRect b1 = {10.0f, self.scrollView.frame.size.height + self.scrollView.frame.origin.y - 49.0f - 10.0f, 49.0f, 49.0f};
+    CGRect b2 = {APP_CONTENT_WIDTH - 10.0f - 49.0f, self.scrollView.frame.size.height + self.scrollView.frame.origin.y - 49.0f - 10.0f, 49.0f, 49.0f};
     UIButton *like = [UIButton buttonWithType:UIButtonTypeCustom];
     UIButton *unlike = [UIButton buttonWithType:UIButtonTypeCustom];
     like.frame = b1;
@@ -179,7 +179,7 @@
 //init progress bar
 - (void)initProgressBar:(double)percent
 {    
-    y  = self.scrollView.frame.size.height +self.scrollView.frame.origin.y + 10.0f;
+    y  = self.scrollView.frame.size.height + self.scrollView.frame.origin.y + 10.0f;
     float paddingLeft = 10.0f;
     float width = APP_CONTENT_WIDTH - 10.0f;
     float likeLength = (width-paddingLeft)/2;
