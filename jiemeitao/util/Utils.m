@@ -46,11 +46,12 @@ const char JMTObjectSingleObjectDictionary;
 
 
 @implementation UIViewController (JMT)
-- (void)setNavigationItemTitle: (NSString *)title withColor:(UIColor*)color
+
+- (void)setNavigationItemTitleColor:(UIColor*)color;
 {
     UILabel *titleView = (UILabel *)self.navigationItem.titleView;
     if (!titleView) {
-        //NSString *title = self.navigationItem.title;
+        NSString *title = self.navigationItem.title;
         titleView = [[UILabel alloc] initWithFrame:CGRectZero];
         titleView.backgroundColor = [UIColor clearColor];
         titleView.font = [UIFont boldSystemFontOfSize:22.0];

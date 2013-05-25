@@ -20,6 +20,7 @@
 
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigation-bar"] forBarMetrics:UIBarMetricsDefault];
     self.view.backgroundColor = RGBCOLOR(255, 248, 248);
+    [self setNavigationItemTitleColor:RGBCOLOR(232, 96, 130)];
 }
 
 - (void)didReceiveMemoryWarning

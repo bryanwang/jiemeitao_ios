@@ -20,7 +20,7 @@
 @end
 
 @interface UIViewController (JMT)
-- (void)setNavigationItemTitle: (NSString *)title withColor:(UIColor*)color;
+- (void)setNavigationItemTitleColor:(UIColor*)color;
 @end
 
 

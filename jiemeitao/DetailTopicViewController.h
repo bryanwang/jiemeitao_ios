@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DetailTopicViewController : JMTViewController
+@interface DetailTopicViewController : JMTViewController <UIScrollViewDelegate>
 @property (nonatomic, strong) id delegate;
 @end
