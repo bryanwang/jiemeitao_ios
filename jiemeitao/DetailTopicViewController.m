@@ -172,20 +172,25 @@
 - (void)initProgressBar:(double)percent
 {    
     
-    //TODO : set background
+    //set background
+    UIImage *img_bk = [UIImage imageNamed:@"detailpage-sortbar-bg.png"];
+    UIImageView *iv_bk = [[UIImageView alloc] initWithImage:img_bk];
+    iv_bk.frame = CGRectMake(0.0f, 320.0f, img_bk.size.width, img_bk.size.height*0.7);
+    [self.view addSubview:iv_bk];
 
-    UIImage *img1 = [UIImage imageNamed:@"sort-bar_01-sel@2x.png"];
-    UIImage *img2 = [UIImage imageNamed:@"sort-bar_03-nor@2x.png"];
-    double likeLength = img1.size.width;
-    double unlikeLength = img2.size.width*0.8;
+    UIImage *img1 = [UIImage imageNamed:@"detailpage-sortbar_01-sel.png"];
+    UIImage *img2 = [UIImage imageNamed:@"detailpage-sortbar_02-nor.png"];
+    double start = 10.0f;
+    double width = 310.0f;
+    double likeLength = (width-start)/2;
     
-    likeLength = likeLength*(2*percent);
-    unlikeLength = unlikeLength*(2*(1-percent));
-    
+     likeLength = likeLength*(2*percent);
+    img1=[img1 stretchableImageWithLeftCapWidth:30.0f topCapHeight:0];
+    img2 = [img2 stretchableImageWithLeftCapWidth:5.0f topCapHeight:0];
     UIImageView *iv1 = [[UIImageView alloc] initWithImage:img1];
     UIImageView *iv2 = [[UIImageView alloc] initWithImage:img2];
-    iv1.frame = CGRectMake(10.0f, 320.0f, likeLength, img1.size.height*0.6);
-    iv2.frame = CGRectMake(likeLength, 320.0f, unlikeLength-10.0f, img2.size.height*0.6);
+    iv1.frame = CGRectMake(start, 320.0f, likeLength, img1.size.height);
+    iv2.frame = CGRectMake(likeLength+start, 320.0f, width-likeLength-start, img2.size.height);
  
     [self.view addSubview:iv1];
     [self.view addSubview:iv2];
@@ -195,14 +200,14 @@
     
     //set text
     NSInteger per_i = percent*100;
-    CGRect t_rect = {36.0f, 330.0f, 250.0f, 20.0f};
+    CGRect t_rect = {36.0f, 328.0f, 250.0f, 20.0f};
     UILabel *t_Bar = [[UILabel alloc] initWithFrame: t_rect];
     t_Bar.numberOfLines = 0;
     t_Bar.backgroundColor = [UIColor clearColor];
     t_Bar.adjustsFontSizeToFitWidth = YES;
     t_Bar.textColor  = RGBCOLOR(100, 100, 100);
     t_Bar.font = [UIFont systemFontOfSize:18.0f];
-    t_Bar.text =[NSString stringWithFormat:@"%i 的人选择了这件", per_i, nil];
+    t_Bar.text =[NSString stringWithFormat:@"%i%%的人选择了这件", per_i, nil];
     [self.view addSubview:t_Bar];
 
 }
@@ -212,10 +217,10 @@
 {
     NSArray *voteUsers = item[@"vote_users"];
     NSInteger count = voteUsers.count;
-    NSInteger width = 32;
-    NSInteger height = 32;
+    NSInteger width = 28;
+    NSInteger height = 28;
     double start_x = 10.0f;
-    double start_y = 360.0f;
+    double start_y = 370.0f;
     double separate = 7.0f;
     
     for (NSUInteger i = 0; i<count; i++) {
