@@ -7,12 +7,19 @@
 //
 
 #import "DetailTopicViewController.h"
+#import <QuartzCore/QuartzCore.h>
+#import "AppDelegate.h"
 
 @interface DetailTopicViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *name;
+@property (weak, nonatomic) IBOutlet UILabel *createTime;
+@property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
 @property (strong, nonatomic) NSDictionary *topic;
 @property (strong,nonatomic) NSArray *items;
+- (void)loadVisiblePage;
+
 @end
 
 @implementation DetailTopicViewController
@@ -44,6 +51,10 @@
     [self setScrollView:nil];
     [self setScrollView:nil];
     [self setPageControl:nil];
+    [self setAvatarImageView:nil];
+    [self setName:nil];
+    [self setCreateTime:nil];
+    [self setName:nil];
     [super viewDidUnload];
 }
 
@@ -75,7 +86,6 @@
     scrollView.showsHorizontalScrollIndicator = NO;
     pageControl.currentPage = 0;
     pageControl.numberOfPages = [self getScrollerImageCount];
-//    scrollView.frame = CGRectMake(0, 0, 320, 420);//TODO
     [self addImageToScollerView:scrollView];
 }
 
@@ -84,7 +94,9 @@
 - (void)addImageToScollerView:(UIScrollView *) scroller
 {
     NSInteger count = self.items.count;
-    
+    NSString *avatar = _topic[@"user"][@"avatar"];
+    self.name.text =_topic[@"user"][@"name"];
+    self.createTime.text = _topic[@"create_time"];
     NSUInteger i;
     for (i = 0; i<count; i++) {
         NSString *imageUrl = _items[i][@"image"][0][@"url"];
@@ -98,8 +110,54 @@
         iv.frame = rect;
         [scroller addSubview:iv];
     }
-    
     scroller.contentSize = CGSizeMake(scroller.bounds.size.width * count, scroller.frame.size.height);
+    [self initAvatar:avatar];
+    [self initLike];
+}
+
+//init avatar
+- (void)initAvatar:(NSString *) url
+{
+    self.avatarImageView.layer.borderColor = RGBCOLOR(255, 255, 255).CGColor;
+    self.avatarImageView.layer.borderWidth = 1.0f;
+    self.avatarImageView.layer.cornerRadius = 4.0f;
+    self.avatarImageView.layer.masksToBounds = YES;
+    [self.avatarImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil];
+    
+}
+
+//init like and unlike
+- (void)initLike{
+    CGRect b1 = {10.0f, 245.0f + MARGIN_HEIGHT, 49.0f, 49.0f};
+    CGRect b2 = {260.0f, 245.0f + MARGIN_HEIGHT, 49.0f, 49.0f};
+    UIButton *like = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *unlike = [UIButton buttonWithType:UIButtonTypeCustom];
+    like.frame = b1;
+    unlike.frame = b2;
+    [like setBackgroundImage:[UIImage imageNamed:@"btn-choice-like-nor"] forState:UIControlStateNormal];
+    [unlike setBackgroundImage:[UIImage imageNamed:@"btn-choice-hate-nor"] forState:UIControlStateNormal];
+    
+    [self.view addSubview:like];
+    [self.view addSubview:unlike];
+    
+}
+
+//add for page control
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    CGSize PagedScrollViewSize = self.scrollView.frame.size;
+    self.scrollView.contentSize = CGSizeMake(PagedScrollViewSize.width * self.getScrollerImageCount, PagedScrollViewSize.height);
+}
+
+- (void)loadVisiblePage{
+    CGFloat pageWidth = self.scrollView.frame.size.width;
+    NSInteger page = (NSInteger)floor((self.scrollView.contentOffset.x - pageWidth/2) / pageWidth) + 1; self.pageControl.currentPage = page;
+}
+
+
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{ // 在屏幕上加载特定页面
+    [self loadVisiblePage];
 }
 
 
