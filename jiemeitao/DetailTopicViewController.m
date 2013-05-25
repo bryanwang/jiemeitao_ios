@@ -9,8 +9,10 @@
 #import "DetailTopicViewController.h"
 
 @interface DetailTopicViewController ()
- @property (strong, nonatomic) NSDictionary *topic;
- @property (strong,nonatomic) NSArray *items;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
+@property (strong, nonatomic) NSDictionary *topic;
+@property (strong,nonatomic) NSArray *items;
 @end
 
 @implementation DetailTopicViewController
@@ -51,7 +53,7 @@
     NSError *error = nil;
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"mock_detail" ofType:@"json"];
     NSData *data = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:filePath]];
-    NSArray *json = (NSArray *)[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error: &error];
+    NSDictionary *json = (NSDictionary *)[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error: &error];
     self.topic = json;
     self.items = self.topic[@"items"];
 }
@@ -68,31 +70,36 @@
     UIPageControl *pageControl = self.pageControl;
     UIScrollView *scrollView = self.scrollView;
    
-    
+    scrollView.pagingEnabled = YES;
+    scrollView.showsVerticalScrollIndicator = NO;
+    scrollView.showsHorizontalScrollIndicator = NO;
     pageControl.currentPage = 0;
     pageControl.numberOfPages = [self getScrollerImageCount];
-    scrollView.frame = CGRectMake(0, 0, 320, 420);//TODO
-    
+//    scrollView.frame = CGRectMake(0, 0, 320, 420);//TODO
     [self addImageToScollerView:scrollView];
-    
 }
 
 
 //add images
 - (void)addImageToScollerView:(UIScrollView *) scroller
 {
+    NSInteger count = self.items.count;
+    
     NSUInteger i;
-    for (i = 0; i<self.getScrollerImageCount;i++) {
-        
+    for (i = 0; i<count; i++) {
         NSString *imageUrl = _items[i][@"image"][0][@"url"];
+        NSLog(@"%@", imageUrl);
         UIImageView *iv = [[UIImageView alloc]init];
+        iv.contentMode = UIViewContentModeScaleAspectFill;
+        iv.clipsToBounds = YES;
         [iv setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:DEFAULT_BG];
-        CGRect rect = iv.frame;
-        rect.size.height = scroller.frame.size.height;
-        rect.size.width = scroller.frame.size.width;
+        CGRect rect = {i * scroller.bounds.size.width, 0.0f, scroller.bounds.size.width, scroller.bounds.size.height};
+        NSLog(@"%@", NSStringFromCGRect(rect));
         iv.frame = rect;
         [scroller addSubview:iv];
     }
+    
+    scroller.contentSize = CGSizeMake(scroller.bounds.size.width * count, scroller.frame.size.height);
 }
 
 

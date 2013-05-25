@@ -125,6 +125,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     NSDictionary *invitation = [[self.invitations objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if (self.invitationItemTappedBlock)
         self.invitationItemTappedBlock(invitation);
