@@ -68,6 +68,7 @@
     DetailTopicViewController *vc = [[DetailTopicViewController alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
     [((UIViewController *)self.delegate).navigationController pushViewController:vc animated:YES];
+    vc.topic_id = [NSString stringWithFormat: @"%@",  self.topic[@"id"]];
 }
 
 - (void) setTopic:(NSDictionary *)topic
@@ -76,7 +77,7 @@
         _topic = topic;
         [self.avatar setImageWithURL:[NSURL URLWithString:topic[@"user"][@"avatar"]] placeholderImage:nil];
         self.name.text = topic[@"user"][@"name"];
-        self.create_time.text = topic[@"create_item_ex"];
+        self.create_time.text = topic[@"create_time_ex"];
         __block float height = MARGIN_HEIGHT;
         
         //images

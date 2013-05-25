@@ -19,6 +19,14 @@
 
 @end
 
+@interface NSString(JMT)
+
+- (NSString *)RailsTimeToNiceTime;
+
+- (NSString *)RailsTimeToFullDate;
+
+@end
+
 @interface UIViewController (JMT)
 - (void)setNavigationItemTitleColor:(UIColor*)color;
 @end

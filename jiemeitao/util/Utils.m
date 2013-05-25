@@ -45,6 +45,27 @@ const char JMTObjectSingleObjectDictionary;
 @end
 
 
+@implementation NSString(JMT)
+
+- (NSString *)RailsTimeToNiceTime
+{
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+    NSDate *date = [dateFormatter dateFromString: self];
+    return [date ToNiceTime];
+}
+
+- (NSString *)RailsTimeToFullDate
+{
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+    NSDate *date = [dateFormatter dateFromString: self];
+    return [date ToFullDate];
+}
+
+
+@end
+
 @implementation UIViewController (JMT)
 
 - (void)setNavigationItemTitleColor:(UIColor*)color;

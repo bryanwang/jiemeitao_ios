@@ -12,6 +12,7 @@
 #define APPLE_ID 0000
 #define BASE_URL @"http://t.bridge21.info"
 #define TOPIC_ALL_INTERFACE @"/api/topic/all"
+#define TOPIC_DETAIL_INTERFACE @"api/topic"
 
 
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )

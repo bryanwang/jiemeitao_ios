@@ -20,9 +20,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
-@property (strong, nonatomic) NSDictionary *topic;
+@property (strong, nonatomic) NSMutableDictionary *topic;
 @property (strong,nonatomic) NSArray *items;
-- (void)loadVisiblePage;
 
 @end
 
@@ -30,61 +29,78 @@
     float y;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+
+- (IBAction)pageControlTapped:(UIPageControl *)sender {
+    CGRect rect = CGRectMake([sender currentPage] * self.scrollView.frame.size.width, 0,
+                             self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+    [self.scrollView scrollRectToVisible:rect animated:YES];
+}
+
+- (void)likeButtonTapped: (UIButton*)button
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+    NSLog(@"like");
+}
+
+- (void)hateButtonTapped: (UIButton*)button
+{
+    NSLog(@"hate");
+}
+
+
+- (void)fetchTopicDetail
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObject:self.topic_id forKey:@"id"];
+    [[JMTHttpClient shareIntance] getPath:TOPIC_DETAIL_INTERFACE parameters:param success:^(AFHTTPRequestOperation *operation, id JSON) {
+        self.topic = [JSON mutableCopy];
+        self.items = self.topic[@"items"];
+        
+        [self initTopicItemsScrollView];
+        [self initTopicUserAvatar];
+        [self initButtons];
+        //从第一个开始
+        [self showVotesDetailForItemInIndex:0];
+    } failure: ^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"error..");
+    }];
+}
+
+- (void)setTopic_id:(NSString *)topic_id
+{
+    if (![_topic_id isEqualToString:topic_id]) {
+        _topic_id = topic_id;
+        
+        [self fetchTopicDetail];
     }
-    return self;
 }
 
-- (void)viewDidLoad
+- (void)setTopic:(NSMutableDictionary *)topic
 {
-    self.title = NSLocalizedString(@"topic detail", "");
-    [self addCustomBackButton];
-    [self generateMockDate];
-    [self initSetting];
-    
-    [super viewDidLoad];
+    if (![_topic isEqual:topic]) {
+        _topic = topic;
+        _topic[@"create_time_ex"] = [_topic[@"create_time"] RailsTimeToNiceTime];
+    }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
-- (void)viewDidUnload {
-    [self setScrollView:nil];
-    [self setScrollView:nil];
-    [self setPageControl:nil];
-    [self setAvatarImageView:nil];
-    [self setName:nil];
-    [self setCreateTime:nil];
-    [self setName:nil];
-    [self setBaseScroll:nil];
-    [super viewDidUnload];
-}
-
-//get mock data
-- (void)generateMockDate
-{
-    NSError *error = nil;
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"mock_detail" ofType:@"json"];
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:filePath]];
-    NSDictionary *json = (NSDictionary *)[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error: &error];
-    self.topic = json;
-    self.items = self.topic[@"items"];
-}
+////get mock data
+//- (void)generateMockDate
+//{
+//    NSError *error = nil;
+//    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"mock_detail" ofType:@"json"];
+//    NSData *data = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:filePath]];
+//    NSDictionary *json = (NSDictionary *)[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error: &error];
+//    self.topic = json;
+//    self.items = self.topic[@"items"];
+//}
 
 
 //get image count
--(NSInteger)getScrollerImageCount{
+- (NSInteger)getScrollerImageCount
+{
     return _items.count;
 }
 
 //init
-- (void)initSetting
+- (void)initTopicItemsScrollView
 {
     UIPageControl *pageControl = self.pageControl;
     UIScrollView *scrollView = self.scrollView;
@@ -102,12 +118,11 @@
 - (void)addImageToScollerView:(UIScrollView *) scroller
 {
     NSInteger count = self.items.count;
-    NSString *avatar = _topic[@"user"][@"avatar"];
     self.name.text =_topic[@"user"][@"name"];
-    self.createTime.text = _topic[@"create_time"];
+    self.createTime.text = _topic[@"create_time_ex"];
     NSUInteger i;
     for (i = 0; i<count; i++) {
-        NSString *imageUrl = _items[i][@"image"][0][@"url"];
+        NSString *imageUrl = _items[i][@"image"];
 
         UIImageView *iv = [[UIImageView alloc]init];
         iv.contentMode = UIViewContentModeScaleAspectFill;
@@ -119,62 +134,38 @@
         [scroller addSubview:iv];
     }
     scroller.contentSize = CGSizeMake(scroller.bounds.size.width * count, scroller.frame.size.height);
-    [self initAvatar:avatar];
-    [self initLike];
-    //从第一个开始
-    [self changeViewByScroll:0];
-//    [self initSmallAvata:_items[1]];
 }
 
 //init avatar
-- (void)initAvatar:(NSString *) url
+- (void)initTopicUserAvatar
 {
+    NSURL *avatar = [NSURL URLWithString: self.topic[@"user"][@"avatar"]];
     self.avatarImageView.layer.borderColor = RGBCOLOR(255, 255, 255).CGColor;
     self.avatarImageView.layer.borderWidth = 1.0f;
     self.avatarImageView.layer.cornerRadius = 4.0f;
     self.avatarImageView.layer.masksToBounds = YES;
-    [self.avatarImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil];
-    
+    [self.avatarImageView setImageWithURL: avatar placeholderImage:nil];
 }
 
 //init like and unlike
-- (void)initLike
+- (void)initButtons
 {
     CGRect b1 = {10.0f, self.scrollView.frame.size.height + self.scrollView.frame.origin.y - 49.0f - 10.0f, 49.0f, 49.0f};
-    CGRect b2 = {APP_CONTENT_WIDTH - 10.0f - 49.0f, self.scrollView.frame.size.height + self.scrollView.frame.origin.y - 49.0f - 10.0f, 49.0f, 49.0f};
     UIButton *like = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIButton *unlike = [UIButton buttonWithType:UIButtonTypeCustom];
-    like.frame = b1;
-    unlike.frame = b2;
+    like.frame = b1;   
     [like setBackgroundImage:[UIImage imageNamed:@"btn-choice-like-nor"] forState:UIControlStateNormal];
-    [unlike setBackgroundImage:[UIImage imageNamed:@"btn-choice-hate-nor"] forState:UIControlStateNormal];
-   
     [like addTarget:self action:@selector(likeButtonTapped:) forControlEvents:UIControlEventTouchDown];
-    [unlike addTarget:self action:@selector(hateButtonTapped:) forControlEvents:UIControlEventTouchDown];
-    
-    
     [self.baseScroll addSubview:like];
-    [self.baseScroll addSubview:unlike];
-    
-}
 
-//like and unlike handler
-- (IBAction)pageControlTapped:(UIPageControl *)sender {
-    CGRect rect = CGRectMake([sender currentPage] * self.scrollView.frame.size.width, 0,
-                             self.scrollView.frame.size.width, self.scrollView.frame.size.height);
-    [self.scrollView scrollRectToVisible:rect animated:YES];
+    if ([self.topic[@"items"] count] > 1) {
+        CGRect b2 = {APP_CONTENT_WIDTH - 10.0f - 49.0f, self.scrollView.frame.size.height + self.scrollView.frame.origin.y - 49.0f - 10.0f, 49.0f, 49.0f};
+        UIButton *unlike = [UIButton buttonWithType:UIButtonTypeCustom];
+        unlike.frame = b2;
+        [unlike setBackgroundImage:[UIImage imageNamed:@"btn-choice-hate-nor"] forState:UIControlStateNormal];
+        [unlike addTarget:self action:@selector(hateButtonTapped:) forControlEvents:UIControlEventTouchDown];
+        [self.baseScroll addSubview:unlike];
+    }
 }
-
-- (void)likeButtonTapped: (UIButton*)button
-{
-    NSLog(@"like");
-}
-
-- (void)hateButtonTapped: (UIButton*)button
-{
-    NSLog(@"hate");
-}
-
 
 //init progress bar
 - (void)initProgressBar:(double)percent
@@ -231,19 +222,17 @@
 }
 
 //init small avatar
-- (void)initSmallAvata:(NSDictionary*)item
+- (void)initVotedUserAvata:(NSArray *)users
 {
     y = y + 10.0f;
-    NSArray *voteUsers = item[@"vote_users"];
-    NSInteger count = voteUsers.count;
+    NSInteger count = users.count;
     NSInteger width = 28;
     NSInteger height = 28;
     double start_x = 10.0f;
     double separate = 7.0f;
     
     for (NSUInteger i = 0; i<count; i++) {
-        NSString *avatar = voteUsers[i][@"avatar"];
-        NSLog(@"%@", avatar);
+        NSString *avatar = users[i][@"avatar"];
         UIImageView *iv = [[UIImageView alloc]init];
         iv.contentMode = UIViewContentModeScaleAspectFill;
         [iv setImageWithURL:[NSURL URLWithString:avatar] placeholderImage:DEFAULT_BG];
@@ -260,7 +249,7 @@
 }
 
 //change data by item index
--(void)changeViewByScroll:(NSInteger)index
+-(void)showVotesDetailForItemInIndex:(NSInteger)index
 {
     //first clear
     for(UIView *subView in [self.baseScroll subviews]){
@@ -270,9 +259,34 @@
     }
     
     NSDictionary *item = _items[index];
-    
     [self initProgressBar:[item[@"percent"] floatValue]];
-    [self initSmallAvata:item];
+    [self initVotedUserAvata:item[@"vote_users"]];
+}
+
+
+- (void)viewDidLoad
+{
+    self.title = NSLocalizedString(@"topic detail", "");
+    [self addCustomBackButton];
+    
+    [super viewDidLoad];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
+- (void)viewDidUnload {
+    [self setScrollView:nil];
+    [self setScrollView:nil];
+    [self setPageControl:nil];
+    [self setAvatarImageView:nil];
+    [self setName:nil];
+    [self setCreateTime:nil];
+    [self setName:nil];
+    [self setBaseScroll:nil];
+    [super viewDidUnload];
 }
 
 //add for page control
@@ -283,19 +297,15 @@
     self.scrollView.contentSize = CGSizeMake(PagedScrollViewSize.width * self.getScrollerImageCount, PagedScrollViewSize.height);
 }
 
-- (void)loadVisiblePage
+
+#pragma scroll view deleagte
+
+- (void)scrollViewDidEndDecelerating: (UIScrollView *)scrollView
 {
     CGFloat pageWidth = self.scrollView.frame.size.width;
     NSInteger page = (NSInteger)floor((self.scrollView.contentOffset.x - pageWidth/2) / pageWidth) + 1;
     self.pageControl.currentPage = page;
-    [self changeViewByScroll:page];
-}
-
-
-
-- (void)scrollViewDidEndDecelerating: (UIScrollView *)scrollView
-{
-    [self loadVisiblePage];
+    [self showVotesDetailForItemInIndex:page];
 }
 
 

@@ -34,13 +34,7 @@
         
         [topics enumerateObjectsUsingBlock:^(id topic, NSUInteger index, BOOL *stop) {
             NSMutableDictionary *dic = [topic mutableCopy];
-            
-            NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
-            NSDate *date = [dateFormatter dateFromString: topic[@"create_time"]];
-            NSString *create_time_ex = [date ToNiceTime];
-            dic[@"create_item_ex"] = create_time_ex;
-            
+            dic[@"create_time_ex"] = [dic[@"create_time"] RailsTimeToNiceTime];
             [array addObject:dic];
         }];
         

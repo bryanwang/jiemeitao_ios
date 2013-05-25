@@ -29,23 +29,17 @@
     NSMutableArray *ins = [NSMutableArray array];
     [invitations enumerateObjectsUsingBlock:^(id invitation, NSUInteger index, BOOL *stop) {
         NSMutableDictionary *dic = [invitation mutableCopy];
-        
-        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
-        NSDate *date = [dateFormatter dateFromString: invitation[@"create_time"]];
-        NSString *create_time_ex = [date ToFullDate];
-        dic[@"create_item_ex"] = create_time_ex;
-        
+        dic[@"create_time_ex"] = [dic[@"create_time"] RailsTimeToFullDate];
         [ins addObject:dic];
     }];
     
-    NSArray *dates = [ins valueForKeyPath:@"create_item_ex"];
+    NSArray *dates = [ins valueForKeyPath:@"create_time_ex"];
     NSSet *uniqueDates = [NSSet setWithArray:dates];
     NSMutableArray *array = [NSMutableArray array];
     self.dates = [[uniqueDates allObjects] mutableCopy];
     
     [self.dates enumerateObjectsUsingBlock:^(id date, NSUInteger index, BOOL *stop) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(create_item_ex like %@)", date];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(create_time_ex like %@)", date];
         NSArray *temp = [ins filteredArrayUsingPredicate:predicate];
         [array addObject:temp];
     }];

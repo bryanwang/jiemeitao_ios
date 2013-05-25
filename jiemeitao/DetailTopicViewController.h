@@ -10,4 +10,5 @@
 
 @interface DetailTopicViewController : JMTViewController <UIScrollViewDelegate>
 @property (nonatomic, strong) id delegate;
+@property (nonatomic, strong) NSString *topic_id;
 @end
