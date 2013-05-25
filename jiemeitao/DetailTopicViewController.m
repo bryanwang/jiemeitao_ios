@@ -6,6 +6,9 @@
 //  Copyright (c) 2013 bruce yang. All rights reserved.
 //
 
+
+//view tag == -1 means need to be update.
+
 #import "DetailTopicViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
@@ -80,7 +83,10 @@
 {
     UIPageControl *pageControl = self.pageControl;
     UIScrollView *scrollView = self.scrollView;
-   
+    
+    self.scrollView.delegate = self;
+    
+    
     scrollView.pagingEnabled = YES;
     scrollView.showsVerticalScrollIndicator = NO;
     scrollView.showsHorizontalScrollIndicator = NO;
@@ -113,8 +119,9 @@
     scroller.contentSize = CGSizeMake(scroller.bounds.size.width * count, scroller.frame.size.height);
     [self initAvatar:avatar];
     [self initLike];
-    [self initProgressBar:0.7f];
-    [self initSmallAvata:_items[0]];
+    //从第一个开始
+    [self changeViewByScroll:0];
+    [self initSmallAvata:_items[1]];
 }
 
 //init avatar
@@ -138,11 +145,28 @@
     unlike.frame = b2;
     [like setBackgroundImage:[UIImage imageNamed:@"btn-choice-like-nor"] forState:UIControlStateNormal];
     [unlike setBackgroundImage:[UIImage imageNamed:@"btn-choice-hate-nor"] forState:UIControlStateNormal];
+   
+    [like addTarget:self action:@selector(likeButtonTapped:) forControlEvents:UIControlEventTouchDown];
+    [unlike addTarget:self action:@selector(hateButtonTapped:) forControlEvents:UIControlEventTouchDown];
+    
     
     [self.view addSubview:like];
     [self.view addSubview:unlike];
     
 }
+
+//like and unlike handler
+
+- (void)likeButtonTapped: (UIButton*)button
+{
+    NSLog(@"like");
+}
+
+- (void)hateButtonTapped: (UIButton*)button
+{
+    NSLog(@"hate");
+}
+
 
 //init progress bar
 - (void)initProgressBar:(double)percent
@@ -162,8 +186,12 @@
     UIImageView *iv2 = [[UIImageView alloc] initWithImage:img2];
     iv1.frame = CGRectMake(10.0f, 320.0f, likeLength, img1.size.height*0.6);
     iv2.frame = CGRectMake(likeLength, 320.0f, unlikeLength-10.0f, img2.size.height*0.6);
+ 
     [self.view addSubview:iv1];
     [self.view addSubview:iv2];
+    
+    iv1.tag = -1;
+    iv2.tag = -1;
     
     //set text
     NSInteger per_i = percent*100;
@@ -199,25 +227,48 @@
         CGRect rect = {i * (width+separate)+start_x, start_y, width, height};
         NSLog(@"%@", NSStringFromCGRect(rect));
         iv.frame = rect;
+        iv.tag = -1;
         [self.view addSubview:iv];
     }
 }
 
+//change data by item index
+-(void)changeViewByScroll:(NSInteger)index
+{
+    //first clear
+    for(UIView *subView in [self.view subviews]){
+        if(subView.tag == -1){
+         [subView removeFromSuperview];
+        }
+    }
+    
+    NSDictionary *item = _items[index];
+    
+    [self initProgressBar:[item[@"percent"] floatValue]];
+    [self initSmallAvata:item];
+    
+}
+
 //add for page control
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     CGSize PagedScrollViewSize = self.scrollView.frame.size;
     self.scrollView.contentSize = CGSizeMake(PagedScrollViewSize.width * self.getScrollerImageCount, PagedScrollViewSize.height);
 }
 
-- (void)loadVisiblePage{
+- (void)loadVisiblePage
+{
     CGFloat pageWidth = self.scrollView.frame.size.width;
-    NSInteger page = (NSInteger)floor((self.scrollView.contentOffset.x - pageWidth/2) / pageWidth) + 1; self.pageControl.currentPage = page;
+    NSInteger page = (NSInteger)floor((self.scrollView.contentOffset.x - pageWidth/2) / pageWidth) + 1;
+    self.pageControl.currentPage = page;
+    [self changeViewByScroll:page];
 }
 
 
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{ // 在屏幕上加载特定页面
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
     [self loadVisiblePage];
 }
 
