@@ -9,6 +9,7 @@
 #import "VoteCell.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
+#import "DetailTopicViewController.h"
 
 @interface VoteCell()
 @property (retain, nonatomic) IBOutlet UIImageView *avatar;
@@ -63,7 +64,7 @@
 - (void)showdetail
 {
     NSLog(@"show detail");
-    UIViewController *vc = [[UIViewController alloc]init];
+    DetailTopicViewController *vc = [[DetailTopicViewController alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
     [((UIViewController *)self.delegate).navigationController pushViewController:vc animated:YES];
 }

@@ -27,6 +27,9 @@
 		6CF8DDD817502203005320BB /* mock_invitations.json in Resources */ = {isa = PBXBuildFile; fileRef = 6CF8DDD717502203005320BB /* mock_invitations.json */; };
 		6CF8DDDF17505A59005320BB /* bg-section.png in Resources */ = {isa = PBXBuildFile; fileRef = 6CF8DDDD17505A59005320BB /* bg-section.png */; };
 		6CF8DDE017505A59005320BB /* bg-section@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6CF8DDDE17505A59005320BB /* bg-section@2x.png */; };
+		759651B917505D37009D35AD /* mock_detail.json in Resources */ = {isa = PBXBuildFile; fileRef = 759651B817505D37009D35AD /* mock_detail.json */; };
+		759651BF17505D84009D35AD /* DetailTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 759651BD17505D84009D35AD /* DetailTopicViewController.m */; };
+		759651C017505D84009D35AD /* DetailTopicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 759651BE17505D84009D35AD /* DetailTopicViewController.xib */; };
 		CA17972B174DDE47002A5D82 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CA17972A174DDE47002A5D82 /* Icon.png */; };
 		CA17972D174DDE53002A5D82 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CA17972C174DDE53002A5D82 /* Icon@2x.png */; };
 		CA17972F174DDE60002A5D82 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CA17972E174DDE60002A5D82 /* Default-568h@2x.png */; };
@@ -109,6 +112,10 @@
 		6CF8DDD717502203005320BB /* mock_invitations.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mock_invitations.json; sourceTree = "<group>"; };
 		6CF8DDDD17505A59005320BB /* bg-section.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-section.png"; sourceTree = "<group>"; };
 		6CF8DDDE17505A59005320BB /* bg-section@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-section@2x.png"; sourceTree = "<group>"; };
+		759651B817505D37009D35AD /* mock_detail.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mock_detail.json; sourceTree = "<group>"; };
+		759651BC17505D84009D35AD /* DetailTopicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailTopicViewController.h; sourceTree = "<group>"; };
+		759651BD17505D84009D35AD /* DetailTopicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailTopicViewController.m; sourceTree = "<group>"; };
+		759651BE17505D84009D35AD /* DetailTopicViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailTopicViewController.xib; sourceTree = "<group>"; };
 		844C52D011F2466DA62F23F6 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		BC940ADEFDF74DF39A49222F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA17972A174DDE47002A5D82 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
@@ -205,6 +212,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		759651BB17505D56009D35AD /* detail */ = {
+			isa = PBXGroup;
+			children = (
+				759651BC17505D84009D35AD /* DetailTopicViewController.h */,
+				759651BD17505D84009D35AD /* DetailTopicViewController.m */,
+				759651BE17505D84009D35AD /* DetailTopicViewController.xib */,
+			);
+			name = detail;
+			sourceTree = "<group>";
+		};
 		CA179742174DDF24002A5D82 /* image */ = {
 			isa = PBXGroup;
 			children = (
@@ -350,6 +367,7 @@
 		CAB1CD12174DDD1500E4BCD6 /* jiemeitao */ = {
 			isa = PBXGroup;
 			children = (
+				759651BB17505D56009D35AD /* detail */,
 				CAC06366174F028D002D8838 /* mock */,
 				CA179768174DE25D002A5D82 /* util */,
 				CA179767174DE1EF002A5D82 /* personal */,
@@ -380,6 +398,7 @@
 			children = (
 				6CF8DDD717502203005320BB /* mock_invitations.json */,
 				CAC06369174F02A4002D8838 /* mock_votes.json */,
+				759651B817505D37009D35AD /* mock_detail.json */,
 			);
 			path = mock;
 			sourceTree = "<group>";
@@ -493,6 +512,8 @@
 				6CF8DDD817502203005320BB /* mock_invitations.json in Resources */,
 				6CF8DDDF17505A59005320BB /* bg-section.png in Resources */,
 				6CF8DDE017505A59005320BB /* bg-section@2x.png in Resources */,
+				759651B917505D37009D35AD /* mock_detail.json in Resources */,
+				759651C017505D84009D35AD /* DetailTopicViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -545,6 +566,7 @@
 				CA88B199174EFFDE00FD6A2F /* VoteCell.m in Sources */,
 				6CF8DDD1175019A4005320BB /* ReceivedInvitationsTableViewController.m in Sources */,
 				6CF8DDD417501DE2005320BB /* InvitationCell.m in Sources */,
+				759651BF17505D84009D35AD /* DetailTopicViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
