@@ -44,6 +44,24 @@ const char JMTObjectSingleObjectDictionary;
 
 @end
 
+
+@implementation UIViewController (JMT)
+- (void)setNavigationItemTitle: (NSString *)title withColor:(UIColor*)color
+{
+    UILabel *titleView = (UILabel *)self.navigationItem.titleView;
+    if (!titleView) {
+        //NSString *title = self.navigationItem.title;
+        titleView = [[UILabel alloc] initWithFrame:CGRectZero];
+        titleView.backgroundColor = [UIColor clearColor];
+        titleView.font = [UIFont boldSystemFontOfSize:22.0];
+        titleView.textColor = color;
+        self.navigationItem.titleView = titleView;
+        titleView.text = title;
+    }
+    [titleView sizeToFit];
+}
+@end
+
 @implementation JMTHttpClient
 
 + (JMTHttpClient *)shareIntance

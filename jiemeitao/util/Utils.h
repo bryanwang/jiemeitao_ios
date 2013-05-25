@@ -19,6 +19,11 @@
 
 @end
 
+@interface UIViewController (JMT)
+- (void)setNavigationItemTitle: (NSString *)title withColor:(UIColor*)color;
+@end
+
+
 @interface JMTHttpClient : AFHTTPClient
 
 + (JMTHttpClient *)shareIntance;

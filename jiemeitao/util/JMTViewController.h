@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BBCustomBackButtonViewController.h"
 
-@interface JMTViewController : UIViewController
+@interface JMTViewController: BBCustomBackButtonViewController
 
 @end

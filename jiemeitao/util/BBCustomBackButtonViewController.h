@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 
 // adds custom back button and simulates native animation
-@interface BBCustomBackButtonViewController : JMTViewController
+@interface BBCustomBackButtonViewController : UIViewController
 {
     // true if self has a navigation controller pushed on top of it
     BOOL _wasPushed;

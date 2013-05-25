@@ -65,10 +65,9 @@
 - (void)showdetail
 {
     NSLog(@"show detail");
-//    DetailTopicViewController *vc = [[DetailTopicViewController alloc]init];
-//    vc.hidesBottomBarWhenPushed = YES;
-//    [((UIViewController *)self.delegate).navigationController pushViewController:vc animated:YES];
-    [[APNSMsgManager sharedInstance] presentModalViewControllerWith: @""];
+    DetailTopicViewController *vc = [[DetailTopicViewController alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [((UIViewController *)self.delegate).navigationController pushViewController:vc animated:YES];
 }
 
 - (void) setTopic:(NSDictionary *)topic

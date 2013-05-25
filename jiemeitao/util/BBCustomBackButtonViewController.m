@@ -122,16 +122,16 @@
 
 - (void)addCustomBackButton
 {
-    NSString *title = self.title ? self.title : NSLocalizedString(@"Back", nil);
-    if (_backButtonTitle != nil) title = _backButtonTitle;
-    [self addCustomBackButtonWithTitle:title];
+//    NSString *title = self.title ? self.title : NSLocalizedString(@"Back", nil);
+//    if (_backButtonTitle != nil) title = _backButtonTitle;
+    [self addCustomBackButtonWithTitle:@"    "];
 }
 
 // Much of this method pulled from Wolfgang Schreur's sweet UIBarButton category.
 // @see http://stackoverflow.com/a/7068222/53653
 - (void)addCustomBackButtonWithTitle:(NSString *)title
 {
-    UIImage *image = [UIImage imageNamed:@"nav-bar-light-back-btn-nor"];
+    UIImage *image = [UIImage imageNamed:@"nav-bar-btn-back"];
     image = [image stretchableImageWithLeftCapWidth:14.0f topCapHeight:0.0f];
     UIFont *font = [UIFont boldSystemFontOfSize:12.0f];
 

@@ -39,7 +39,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+
+    [self setNavigationItemTitle:NSLocalizedString(@"topic detail", @"") withColor:RGBCOLOR(232, 96, 130)];
+    [self addCustomBackButton];
     [self generateMockDate];
     [self initSetting];
 }
@@ -47,7 +49,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)viewDidUnload {
@@ -127,7 +128,7 @@
 //init avatar
 - (void)initAvatar:(NSString *) url
 {
-    self.avatarImageView.layer.borderColor = RGBCOLOR(255, 255, 255).CGColor;
+    self.avatarImageView.layer.borderColor = RGBCOLOR(0, 0, 0).CGColor;
     self.avatarImageView.layer.borderWidth = 1.0f;
     self.avatarImageView.layer.cornerRadius = 4.0f;
     self.avatarImageView.layer.masksToBounds = YES;

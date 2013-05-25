@@ -29,14 +29,14 @@ static APNSMsgManager *instance = nil;
     ac.topic_id = topic_id;
 
     UIViewController *root =  ((AppDelegate *)[UIApplication sharedApplication].delegate).window.rootViewController;
-    NSLog(@"%@", NSStringFromCGRect(ac.view.frame));
-    [root presentModalViewController:ac animated:YES];    
+    [root presentModalViewController:ac animated:YES];
 }
 
 @end
 
 @interface APNSMsgPresentViewController ()
 
+@property (strong, nonatomic) DetailTopicViewController *dc;
 @property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
 
 @end
@@ -50,7 +50,7 @@ static APNSMsgManager *instance = nil;
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
+        self.dc = [[DetailTopicViewController alloc]initWithNibName:@"DetailTopicViewController" bundle:nil];
     }
     return self;
 }
@@ -62,10 +62,9 @@ static APNSMsgManager *instance = nil;
     [self.toolbar setBackgroundImage:[UIImage imageNamed:@"navigation-bar"]  forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     self.view.backgroundColor = RGBCOLOR(255, 248, 248);
     
-    DetailTopicViewController *dc = [[DetailTopicViewController alloc]initWithNibName:@"DetailTopicViewController" bundle:nil];
     CGRect frame = {0.0f, self.toolbar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height};
-    dc.view.frame = frame;
-    [self.view addSubview:dc.view];
+    self.dc.view.frame = frame;
+    [self.view addSubview:self.dc.view];
 }
 
 

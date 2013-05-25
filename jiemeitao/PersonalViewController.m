@@ -9,6 +9,7 @@
 #import "PersonalViewController.h"
 #import <AKSegmentedControl.h>
 #import "ReceivedInvitationsTableViewController.h"
+#import "DetailTopicViewController.h"
 
 @interface PersonalViewController () {
     UITableView *tableivew;
@@ -25,8 +26,7 @@
         
         __block PersonalViewController *pc = self;
         _receivedInvitationsTableViewController.invitationItemTappedBlock = ^(id invitation) {
-            //todo: push detail view controller
-            UIViewController *vc = [[UIViewController alloc] init];
+            DetailTopicViewController *vc = [[DetailTopicViewController alloc]init];
             vc.hidesBottomBarWhenPushed = YES;
             [pc.navigationController pushViewController:vc animated:YES];
         };
