@@ -44,7 +44,7 @@
     }
 }
 
-- (void)generateMockDate
+- (void)generateMockData
 {
     NSError *error = nil;
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"mock_votes" ofType:@"json"];
@@ -59,7 +59,7 @@
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"nav-bar-logo"]];
     self.tableview.backgroundColor = RGBCOLOR(255, 248, 248);
     self.tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    [self generateMockDate];
+    [self generateMockData];
 }
 
 #pragma mark - Table view data source

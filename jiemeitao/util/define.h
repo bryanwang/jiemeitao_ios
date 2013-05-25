@@ -33,6 +33,7 @@
 #define CELL_WIDTH 320.0f
 #define COUNT_VIEW_HEIGHT 45.0f
 #define SEP_HEIGHT 12.0f
+#define SECTION_HEIGHT 23.0f
 
 #define MESSAGE_DRU 1.0f
 

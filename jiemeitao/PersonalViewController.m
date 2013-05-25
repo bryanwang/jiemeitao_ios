@@ -8,16 +8,50 @@
 
 #import "PersonalViewController.h"
 #import <AKSegmentedControl.h>
+#import "ReceivedInvitationsTableViewController.h"
 
-@interface PersonalViewController ()
-
+@interface PersonalViewController () {
+    UITableView *tableivew;
+}
+@property (strong, nonatomic) ReceivedInvitationsTableViewController  *receivedInvitationsTableViewController;
 @end
 
 @implementation PersonalViewController
 
+- (ReceivedInvitationsTableViewController *)receivedInvitationsTableViewController
+{
+    if (_receivedInvitationsTableViewController == nil) {
+        _receivedInvitationsTableViewController = [[ReceivedInvitationsTableViewController alloc]init];
+    }
+    
+    return _receivedInvitationsTableViewController;
+}
+
+- (void)addTableViewToSelfView: (UITableView *)tableview
+{
+    if (tableivew == nil) return;
+    CGRect f = {0.0f, 0.0f, GET_VIEW_WIDTH(self.view), GET_VIEW_HEIGHT(self.view)};
+    tableivew.frame = f;
+    [self.view addSubview:tableivew];
+}
+
 - (void) segmentedControlValueChanged: (AKSegmentedControl *)sender
 {
-    NSLog(@"%d", [sender.selectedIndexes lastIndex]);
+    NSUInteger index =  [sender.selectedIndexes lastIndex];
+    if (tableivew != nil) {
+        [tableivew removeFromSuperview];
+        tableivew = nil;
+    }
+    switch (index) {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                tableivew = self.receivedInvitationsTableViewController.tableView;
+    }
+    
+    [self addTableViewToSelfView:tableivew];
 }
 
 - (void)generateSegmentedControl
@@ -65,7 +99,10 @@
     segmentedControl.buttonsArray = @[btn1, btn2, btn3];
     self.navigationItem.titleView = segmentedControl;
     [segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+
     [segmentedControl setSelectedIndex:2];
+    tableivew = self.receivedInvitationsTableViewController.tableView;
+    [self addTableViewToSelfView:tableivew];
 }
 
 - (void)viewDidLoad
