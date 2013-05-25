@@ -6,7 +6,10 @@
              {
              "item_id": 1,
              "vote_count": 10,
+             "percent":0.7,
              "vote_users":[
+                           {"name": "杨鑫诚Bruce", "avatar": "http://tp1.sinaimg.cn/1862940640/180/5634214186/0"},
+                           {"name": "马新颖-ABC", "avatar": "http://tp2.sinaimg.cn/1784380953/50/5650988331/0"},
                            {"name": "杨鑫诚Bruce", "avatar": "http://tp1.sinaimg.cn/1862940640/180/5634214186/0"},
                            {"name": "马新颖-ABC", "avatar": "http://tp2.sinaimg.cn/1784380953/50/5650988331/0"}
                            ],
@@ -18,6 +21,7 @@
              {
              "item_id": 2,
              "vote_count": 17,
+             "percent":0.5,
              "vote_users":[
                            {"name": "杨鑫诚Bruce", "avatar": "http://tp1.sinaimg.cn/1862940640/180/5634214186/0"}
                            ],
@@ -28,6 +32,7 @@
              
              {
              "item_id": 3,
+             "percent":0.3,
              "vote_count": 99,
              "vote_users":[
                            {"name": "马新颖-ABC", "avatar": "http://tp2.sinaimg.cn/1784380953/50/5650988331/0"}
