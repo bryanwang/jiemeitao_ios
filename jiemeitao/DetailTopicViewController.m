@@ -113,6 +113,8 @@
     scroller.contentSize = CGSizeMake(scroller.bounds.size.width * count, scroller.frame.size.height);
     [self initAvatar:avatar];
     [self initLike];
+    [self initProgressBar:0.7f];
+    [self initSmallAvata:_items[0]];
 }
 
 //init avatar
@@ -128,8 +130,8 @@
 
 //init like and unlike
 - (void)initLike{
-    CGRect b1 = {10.0f, 245.0f + MARGIN_HEIGHT, 49.0f, 49.0f};
-    CGRect b2 = {260.0f, 245.0f + MARGIN_HEIGHT, 49.0f, 49.0f};
+    CGRect b1 = {10.0f, 200.0f + MARGIN_HEIGHT, 49.0f, 49.0f};
+    CGRect b2 = {260.0f, 200.0f + MARGIN_HEIGHT, 49.0f, 49.0f};
     UIButton *like = [UIButton buttonWithType:UIButtonTypeCustom];
     UIButton *unlike = [UIButton buttonWithType:UIButtonTypeCustom];
     like.frame = b1;
@@ -140,6 +142,65 @@
     [self.view addSubview:like];
     [self.view addSubview:unlike];
     
+}
+
+//init progress bar
+- (void)initProgressBar:(double)percent
+{    
+    
+    //TODO : set background
+
+    UIImage *img1 = [UIImage imageNamed:@"sort-bar_01-sel@2x.png"];
+    UIImage *img2 = [UIImage imageNamed:@"sort-bar_03-nor@2x.png"];
+    double likeLength = img1.size.width;
+    double unlikeLength = img2.size.width*0.8;
+    
+    likeLength = likeLength*(2*percent);
+    unlikeLength = unlikeLength*(2*(1-percent));
+    
+    UIImageView *iv1 = [[UIImageView alloc] initWithImage:img1];
+    UIImageView *iv2 = [[UIImageView alloc] initWithImage:img2];
+    iv1.frame = CGRectMake(10.0f, 320.0f, likeLength, img1.size.height*0.6);
+    iv2.frame = CGRectMake(likeLength, 320.0f, unlikeLength-10.0f, img2.size.height*0.6);
+    [self.view addSubview:iv1];
+    [self.view addSubview:iv2];
+    
+    //set text
+    NSInteger per_i = percent*100;
+    CGRect t_rect = {36.0f, 330.0f, 250.0f, 20.0f};
+    UILabel *t_Bar = [[UILabel alloc] initWithFrame: t_rect];
+    t_Bar.numberOfLines = 0;
+    t_Bar.backgroundColor = [UIColor clearColor];
+    t_Bar.adjustsFontSizeToFitWidth = YES;
+    t_Bar.textColor  = RGBCOLOR(100, 100, 100);
+    t_Bar.font = [UIFont systemFontOfSize:18.0f];
+    t_Bar.text =[NSString stringWithFormat:@"%i 的人选择了这件", per_i, nil];
+    [self.view addSubview:t_Bar];
+
+}
+
+//init small avatar
+- (void)initSmallAvata:(NSDictionary*)item
+{
+    NSArray *voteUsers = item[@"vote_users"];
+    NSInteger count = voteUsers.count;
+    NSInteger width = 32;
+    NSInteger height = 32;
+    double start_x = 10.0f;
+    double start_y = 360.0f;
+    double separate = 7.0f;
+    
+    for (NSUInteger i = 0; i<count; i++) {
+        NSString *avatar = voteUsers[i][@"avatar"];
+        NSLog(@"%@", avatar);
+        UIImageView *iv = [[UIImageView alloc]init];
+        iv.contentMode = UIViewContentModeScaleAspectFill;
+        [iv setImageWithURL:[NSURL URLWithString:avatar] placeholderImage:DEFAULT_BG];
+        CGRect rect = {i * (width+separate)+start_x, start_y, width, height};
+        NSLog(@"%@", NSStringFromCGRect(rect));
+        iv.frame = rect;
+        [self.view addSubview:iv];
+    }
 }
 
 //add for page control
