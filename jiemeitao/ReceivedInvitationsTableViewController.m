@@ -26,13 +26,21 @@
 
 - (void) generateDateAndInvitations: (NSArray *)invitations
 {
-    NSArray *dates = [invitations valueForKeyPath:@"create_time"];
+    NSMutableArray *ins = [invitations mutableCopy];
+    [ins enumerateObjectsUsingBlock:^(id invitation, NSUInteger index, BOOL *stop) {
+        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+        NSDate *date = [dateFormatter dateFromString: invitation[@"create_time"]];
+        NSString *create_time_ex = [date ToFullDate];
+        [(NSMutableDictionary *)invitation setObject:create_time_ex forKey:@"create_item_ex"];
+    }];
+    
+    NSArray *dates = [ins valueForKeyPath:@"create_item_ex"];
     NSSet *uniqueDates = [NSSet setWithArray:dates];
-
     NSMutableArray *array = [NSMutableArray array];
     self.dates = [[uniqueDates allObjects] mutableCopy];
     [self.dates enumerateObjectsUsingBlock:^(id date, NSUInteger index, BOOL *stop) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(create_time like %@)", date];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(create_item_ex like %@)", date];
         NSArray *temp = [invitations filteredArrayUsingPredicate:predicate];
         [array addObject:temp];
     }];
@@ -46,6 +54,7 @@
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"mock_invitations" ofType:@"json"];
     NSData *data = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:filePath]];
     NSArray *json = (NSArray *)[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error: &error];
+    
     [self generateDateAndInvitations: json];
 }
 

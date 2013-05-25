@@ -24,3 +24,17 @@
 + (JMTHttpClient *)shareIntance;
 
 @end
+
+@interface NSDate(JMT)
+
+- (NSString*) ToFullDate;
+- (NSString*) ToFullDateTime;
+- (NSString*) ToFullTime;
+- (NSString*) ToShortDate;
+- (NSString*) ToShortDateTime;
+- (NSString*) ToShortTime;
+- (NSString*) ToNiceTime;
+
+@end
+
+

@@ -86,7 +86,8 @@
     NSString *deviceTokenString = [self deviceTokenStringFromTokenData:deviceToken];
     NSLog(@"Device Token is: %@", deviceTokenString);
     
-    // Toyawork's iPhone: 173B4A6ECA0BFCADB927073B579172F1E73DA5CCBB8EC499447308067AA64889
+    // Toyawork's iPhone:
+    
     
     // todo: 这个地方把token发给服务器
     //    [self sendProviderDeviceToken:devTokenBytes]; // custom method
