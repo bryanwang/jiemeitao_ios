@@ -75,7 +75,7 @@
         _topic = topic;
         [self.avatar setImageWithURL:[NSURL URLWithString:topic[@"user"][@"avatar"]] placeholderImage:nil];
         self.name.text = topic[@"user"][@"name"];
-        self.create_time.text = topic[@"create_time"];
+        self.create_time.text = topic[@"create_item_ex"];
         __block float height = MARGIN_HEIGHT;
         
         //images

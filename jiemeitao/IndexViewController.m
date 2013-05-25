@@ -39,6 +39,15 @@
 - (void)setTopics:(NSArray *)topics
 {
     if (![_topics isEqualToArray:topics]) {
+        [topics enumerateObjectsUsingBlock:^(id topic, NSUInteger index, BOOL *stop) {
+            NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+            NSDate *date = [dateFormatter dateFromString: topic[@"create_time"]];
+            NSString *create_time_ex = [date ToNiceTime];
+            
+            [(NSMutableDictionary *)topic setObject:create_time_ex forKey:@"create_item_ex"];
+        }];
+        
         _topics = topics;
         [self.tableview reloadData];
     }
