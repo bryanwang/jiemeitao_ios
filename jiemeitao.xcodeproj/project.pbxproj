@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		02539DBEEC7A402DA6A9F730 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC940ADEFDF74DF39A49222F /* libPods.a */; };
+		6C90963C1750CE4800A83DCA /* APNSMsgPresentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C90963A1750CE4800A83DCA /* APNSMsgPresentViewController.m */; };
+		6C90963D1750CE4800A83DCA /* APNSMsgPresentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C90963B1750CE4800A83DCA /* APNSMsgPresentViewController.xib */; };
 		6CF8DDB3174F8B1C005320BB /* bg-default.png in Resources */ = {isa = PBXBuildFile; fileRef = 6CF8DDB2174F8B1C005320BB /* bg-default.png */; };
 		6CF8DDC0174FA9AF005320BB /* sort-bar_01-nor.png in Resources */ = {isa = PBXBuildFile; fileRef = 6CF8DDB4174FA9AF005320BB /* sort-bar_01-nor.png */; };
 		6CF8DDC1174FA9AF005320BB /* sort-bar_01-nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6CF8DDB5174FA9AF005320BB /* sort-bar_01-nor@2x.png */; };
@@ -91,6 +93,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6C9096391750CE4800A83DCA /* APNSMsgPresentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APNSMsgPresentViewController.h; sourceTree = "<group>"; };
+		6C90963A1750CE4800A83DCA /* APNSMsgPresentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APNSMsgPresentViewController.m; sourceTree = "<group>"; };
+		6C90963B1750CE4800A83DCA /* APNSMsgPresentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = APNSMsgPresentViewController.xib; sourceTree = "<group>"; };
 		6CF8DDB2174F8B1C005320BB /* bg-default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-default.png"; sourceTree = "<group>"; };
 		6CF8DDB4174FA9AF005320BB /* sort-bar_01-nor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sort-bar_01-nor.png"; sourceTree = "<group>"; };
 		6CF8DDB5174FA9AF005320BB /* sort-bar_01-nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sort-bar_01-nor@2x.png"; sourceTree = "<group>"; };
@@ -319,6 +324,9 @@
 				CA179769174DE25D002A5D82 /* define.h */,
 				CA179782174DEB19002A5D82 /* Utils.h */,
 				CA179783174DEB19002A5D82 /* Utils.m */,
+				6C9096391750CE4800A83DCA /* APNSMsgPresentViewController.h */,
+				6C90963A1750CE4800A83DCA /* APNSMsgPresentViewController.m */,
+				6C90963B1750CE4800A83DCA /* APNSMsgPresentViewController.xib */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -514,6 +522,7 @@
 				6CF8DDE017505A59005320BB /* bg-section@2x.png in Resources */,
 				759651B917505D37009D35AD /* mock_detail.json in Resources */,
 				759651C017505D84009D35AD /* DetailTopicViewController.xib in Resources */,
+				6C90963D1750CE4800A83DCA /* APNSMsgPresentViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,6 +576,7 @@
 				6CF8DDD1175019A4005320BB /* ReceivedInvitationsTableViewController.m in Sources */,
 				6CF8DDD417501DE2005320BB /* InvitationCell.m in Sources */,
 				759651BF17505D84009D35AD /* DetailTopicViewController.m in Sources */,
+				6C90963C1750CE4800A83DCA /* APNSMsgPresentViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -24,24 +24,29 @@
     }
 }
 
-- (void) generateDateAndInvitations: (NSArray *)invitations
+- (void) generateDateAndInvitations: (NSMutableArray *)invitations
 {
-    NSMutableArray *ins = [invitations mutableCopy];
-    [ins enumerateObjectsUsingBlock:^(id invitation, NSUInteger index, BOOL *stop) {
+    NSMutableArray *ins = [NSMutableArray array];
+    [invitations enumerateObjectsUsingBlock:^(id invitation, NSUInteger index, BOOL *stop) {
+        NSMutableDictionary *dic = [invitation mutableCopy];
+        
         NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
         NSDate *date = [dateFormatter dateFromString: invitation[@"create_time"]];
         NSString *create_time_ex = [date ToFullDate];
-        [(NSMutableDictionary *)invitation setObject:create_time_ex forKey:@"create_item_ex"];
+        dic[@"create_item_ex"] = create_time_ex;
+        
+        [ins addObject:dic];
     }];
     
     NSArray *dates = [ins valueForKeyPath:@"create_item_ex"];
     NSSet *uniqueDates = [NSSet setWithArray:dates];
     NSMutableArray *array = [NSMutableArray array];
     self.dates = [[uniqueDates allObjects] mutableCopy];
+    
     [self.dates enumerateObjectsUsingBlock:^(id date, NSUInteger index, BOOL *stop) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(create_item_ex like %@)", date];
-        NSArray *temp = [invitations filteredArrayUsingPredicate:predicate];
+        NSArray *temp = [ins filteredArrayUsingPredicate:predicate];
         [array addObject:temp];
     }];
     
@@ -53,7 +58,7 @@
     NSError *error = nil;
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"mock_invitations" ofType:@"json"];
     NSData *data = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:filePath]];
-    NSArray *json = (NSArray *)[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error: &error];
+    NSMutableArray *json = (NSMutableArray *)[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error: &error];
     
     [self generateDateAndInvitations: json];
 }

@@ -10,12 +10,14 @@
 #define jiemeitao_define_h
 
 #define APPLE_ID 0000
-#define BASE_URL @""
+#define BASE_URL @"http://t.bridge21.info"
+#define TOPIC_ALL_INTERFACE @"/api/topic/all"
 
 
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 #define IS_WIDESCREEN ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 )
 #define APP_SCREEN_BOUNDS   [[UIScreen mainScreen] bounds]
+#define APP_BOUNDS [[UIScreen mainScreen] applicationFrame]
 #define APP_SCREEN_HEIGHT   (APP_SCREEN_BOUNDS.size.height)
 #define APP_SCREEN_WIDTH    (APP_SCREEN_BOUNDS.size.width)
 #define APP_STATUS_FRAME    [UIApplication sharedApplication].statusBarFrame

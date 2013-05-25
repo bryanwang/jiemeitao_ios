@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface DetailTopicViewController : JMTViewController
- @property (nonatomic, strong) id delegate;
+@property (nonatomic, strong) id delegate;
 @end

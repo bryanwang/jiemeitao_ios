@@ -11,7 +11,7 @@
 
 @interface IndexViewController ()
 @property (strong, nonatomic) IBOutlet UITableView *tableview;
-@property (strong, nonatomic) NSArray *topics;
+@property (strong, nonatomic) NSMutableArray *topics;
 
 @end
 
@@ -27,39 +27,44 @@
     return self;
 }
 
-//- (NSArray *)topics
-//{
-//    if (_topics == nil) {
-//        _topics = [NSArray array];
-//    }
-//    
-//    return _topics;
-//}
-//
-- (void)setTopics:(NSArray *)topics
+- (void)setTopics:(NSMutableArray *)topics
 {
     if (![_topics isEqualToArray:topics]) {
+        NSMutableArray *array = [NSMutableArray array];
+        
         [topics enumerateObjectsUsingBlock:^(id topic, NSUInteger index, BOOL *stop) {
+            NSMutableDictionary *dic = [topic mutableCopy];
+            
             NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
             NSDate *date = [dateFormatter dateFromString: topic[@"create_time"]];
             NSString *create_time_ex = [date ToNiceTime];
+            dic[@"create_item_ex"] = create_time_ex;
             
-            [(NSMutableDictionary *)topic setObject:create_time_ex forKey:@"create_item_ex"];
+            [array addObject:dic];
         }];
         
-        _topics = topics;
+        _topics = array;
         [self.tableview reloadData];
     }
 }
 
-- (void)generateMockData
+//- (void)generateMockData
+//{
+//    NSError *error = nil;
+//    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"mock_votes" ofType:@"json"];
+//    NSData *data = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:filePath]];
+//    NSMutableArray *json = (NSMutableArray *)[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error: &error];
+//    self.topics = json;
+//}
+
+- (void)fetchData
 {
-    NSError *error = nil;
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"mock_votes" ofType:@"json"];
-    NSData *data = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:filePath]];
-    NSArray *json = (NSArray *)[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error: &error];
-    self.topics = json;
+    [[JMTHttpClient shareIntance] getPath:TOPIC_ALL_INTERFACE parameters:nil success:^(AFHTTPRequestOperation *operation, id JSON) {
+        self.topics = (NSMutableArray *)JSON;
+    } failure: ^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"error..");
+    }];
 }
 
 - (void)viewDidLoad
@@ -68,7 +73,8 @@
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"nav-bar-logo"]];
     self.tableview.backgroundColor = RGBCOLOR(255, 248, 248);
     self.tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    [self generateMockData];
+//    [self generateMockData];
+    [self fetchData];
 }
 
 #pragma mark - Table view data source
@@ -86,12 +92,13 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *topic = [self.topics objectAtIndex:indexPath.row];
-    if (topic[@"image"] == nil || [topic[@"image"] count] == 0)
+    NSArray *items = topic[@"items"];
+    if (items == nil || items.count == 0)
         return INIT_HEIGHT;
-    else if ([topic[@"image"] count] == 1)
+    else if (items.count == 1)
         return MARGIN_HEIGHT + CELL_WIDTH + SEP_HEIGHT + COUNT_VIEW_HEIGHT;
     else
-        return MARGIN_HEIGHT + SEP_HEIGHT + COUNT_VIEW_HEIGHT + (CELL_WIDTH / 2) * (int)(([topic[@"image"] count] + 2 -1) / 2);
+        return MARGIN_HEIGHT + SEP_HEIGHT + COUNT_VIEW_HEIGHT + (CELL_WIDTH / 2) * (int)((items.count + 2 -1) / 2);
 }
 
 - (VoteCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

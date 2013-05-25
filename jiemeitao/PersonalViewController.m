@@ -110,6 +110,7 @@
     [btn3 setBackgroundImage:[UIImage imageNamed:@"sort-bar_03-sel"] forState:UIControlStateHighlighted];
     
     AKSegmentedControl *segmentedControl = [[AKSegmentedControl alloc] initWithFrame:r];
+    segmentedControl.separatorImage = [[UIImage alloc] init];
     [segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
     [segmentedControl setSegmentedControlMode:AKSegmentedControlModeSticky];
     segmentedControl.buttonsArray = @[btn1, btn2, btn3];

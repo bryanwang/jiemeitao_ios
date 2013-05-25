@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
 #import "DetailTopicViewController.h"
+#import "APNSMsgPresentViewController.h"
 
 @interface VoteCell()
 @property (retain, nonatomic) IBOutlet UIImageView *avatar;
@@ -64,9 +65,10 @@
 - (void)showdetail
 {
     NSLog(@"show detail");
-    DetailTopicViewController *vc = [[DetailTopicViewController alloc]init];
-    vc.hidesBottomBarWhenPushed = YES;
-    [((UIViewController *)self.delegate).navigationController pushViewController:vc animated:YES];
+//    DetailTopicViewController *vc = [[DetailTopicViewController alloc]init];
+//    vc.hidesBottomBarWhenPushed = YES;
+//    [((UIViewController *)self.delegate).navigationController pushViewController:vc animated:YES];
+    [[APNSMsgManager sharedInstance] presentModalViewControllerWith: @""];
 }
 
 - (void) setTopic:(NSDictionary *)topic
@@ -79,16 +81,17 @@
         __block float height = MARGIN_HEIGHT;
         
         //images
-        if (topic[@"image"] == nil || [topic[@"image"] count] == 0) return;
-        if ([topic[@"image"] count] == 1) {
-            NSDictionary *image = topic[@"image"][0];
+        NSArray *items = topic[@"items"];
+        if (items == nil || items.count == 0) return;
+        if (items.count == 1) {
+            NSDictionary *item = items[0];
             CGRect r1 = {{0.0f, MARGIN_HEIGHT}, {CELL_WIDTH, CELL_WIDTH}};
             UIView *v = [[UIView alloc]initWithFrame:r1];
             CGRect r2 = {{0.0f, 0.0f}, {CELL_WIDTH, CELL_WIDTH}};
             UIImageView *i = [[UIImageView alloc]initWithFrame:r2];
             i.contentMode = UIViewContentModeScaleAspectFill;
             i.clipsToBounds = YES;
-            [i setImageWithURL:[NSURL URLWithString:image[@"url"]] placeholderImage:DEFAULT_BG];
+            [i setImageWithURL:[NSURL URLWithString:item[@"image"]] placeholderImage:DEFAULT_BG];
             [v addSubview:i];
             
             //buttons
@@ -112,7 +115,7 @@
             height = height + CELL_WIDTH;
         }
         else {
-            [topic[@"image"] enumerateObjectsUsingBlock:^(id image, NSUInteger index, BOOL *stop) {
+            [items enumerateObjectsUsingBlock:^(id item, NSUInteger index, BOOL *stop) {
                 CGRect r1 = {{0.0f + (index % 2) * CELL_WIDTH / 2, MARGIN_HEIGHT + (index / 2) * (CELL_WIDTH / 2)}, {CELL_WIDTH / 2,  CELL_WIDTH / 2}};
                 UIView *v = [[UIView alloc]initWithFrame:r1];
                 //images
@@ -120,7 +123,7 @@
                 UIImageView *i = [[UIImageView alloc]initWithFrame:r2];
                 i.contentMode = UIViewContentModeScaleAspectFill;
                 i.clipsToBounds = YES;
-                [i setImageWithURL:[NSURL URLWithString:image[@"url"]] placeholderImage:DEFAULT_BG];
+                [i setImageWithURL:[NSURL URLWithString:item[@"image"]] placeholderImage:DEFAULT_BG];
                 [v addSubview:i];
                 
                 //buttons
@@ -135,7 +138,7 @@
                 [self addSubview:like];
             }];
             
-            height = height + ([topic[@"image"] count] + 2 - 1) / 2 * (CELL_WIDTH / 2);
+            height = height + (items.count + 2 - 1) / 2 * (CELL_WIDTH / 2);
         }
         
     
