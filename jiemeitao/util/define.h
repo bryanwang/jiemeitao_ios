@@ -13,6 +13,7 @@
 #define BASE_URL @"http://t.bridge21.info"
 #define TOPIC_ALL_INTERFACE @"/api/topic/all"
 #define TOPIC_DETAIL_INTERFACE @"api/topic"
+#define ITEM_VOTE_INTERFACE @"api/topic/vote"
 
 
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )

@@ -39,18 +39,52 @@
 
 - (void)likeButtonTapped: (UIButton*)button
 {
-    NSString *topic_id = self.topic_id;
     NSString *item_id = self.topic[@"items"][currentIndex][@"item_id"];
-    NSLog(@"%@", topic_id);
-    NSLog(@"%@", item_id);
+    [self voteByPost:item_id :@"1"];//like
 }
 
 - (void)hateButtonTapped: (UIButton*)button
 {
-    NSString *topic_id = self.topic_id;
     NSString *item_id = self.topic[@"items"][currentIndex][@"item_id"];
-    NSLog(@"%@", topic_id);
-    NSLog(@"%@", item_id);
+    [self voteByPost:item_id :@"-1"];//like
+}
+
+//post method for like and hate
+-(void)voteByPost:(NSString*)itemId :(NSString*)like
+{
+    NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:itemId,@"item_id",like,@"value",nil];
+    
+     //TODO need to replace to post.
+    
+    [[JMTHttpClient shareIntance] getPath:ITEM_VOTE_INTERFACE parameters:param success:^(AFHTTPRequestOperation *operation, id JSON) {
+        NSInteger status = [[JSON objectForKey:@"status"] integerValue];
+        if (status == 1) {
+            [TSMessage showNotificationInViewController:self
+                                              withTitle:NSLocalizedString(@"vote succ", @"")
+                                            withMessage:nil
+                                               withType:TSMessageNotificationTypeSuccess
+                                           withDuration:MESSAGE_DRU];
+        }
+        else if (status == 2){
+            [TSMessage showNotificationInViewController:self
+                                              withTitle:NSLocalizedString(@"voted", @"")
+                                            withMessage:nil
+                                               withType:TSMessageNotificationTypeSuccess
+                                           withDuration:MESSAGE_DRU];
+        }
+        else{
+            [TSMessage showNotificationInViewController:self
+                                              withTitle:NSLocalizedString(@"vote succ", @"")
+                                            withMessage:nil
+                                               withType:TSMessageNotificationTypeSuccess
+                                           withDuration:MESSAGE_DRU];
+        }
+        
+         }
+    failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"error for vote");
+    }];
+    
 }
 
 
