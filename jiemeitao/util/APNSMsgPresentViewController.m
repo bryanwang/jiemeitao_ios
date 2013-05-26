@@ -26,9 +26,8 @@ static APNSMsgManager *instance = nil;
 - (void) presentModalViewControllerWith:(NSString *)topic_id
 {
     APNSMsgPresentViewController *ac = [[APNSMsgPresentViewController alloc]initWithNibName:@"APNSMsgPresentViewController" bundle:nil];
-    ac.topic_id = topic_id;
-
     UIViewController *root =  ((AppDelegate *)[UIApplication sharedApplication].delegate).window.rootViewController;
+    ac.topic_id = topic_id;
     [root presentModalViewController:ac animated:YES];
 }
 
@@ -42,6 +41,7 @@ static APNSMsgManager *instance = nil;
 @end
 
 @implementation APNSMsgPresentViewController
+
 - (IBAction)dismiss:(id)sender {
     [self dismissModalViewControllerAnimated:YES];
 }
@@ -61,8 +61,19 @@ static APNSMsgManager *instance = nil;
     
     [self.toolbar setBackgroundImage:[UIImage imageNamed:@"navigation-bar"]  forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
     self.view.backgroundColor = RGBCOLOR(255, 248, 248);
+    UIButton *imageButton = [UIButton  buttonWithType:UIButtonTypeCustom];
+    imageButton.frame = CGRectMake(0,0,38,32);
+    [imageButton setImage:[UIImage imageNamed:@"nav-bar-btn-back"] forState:UIControlStateNormal];
+    [imageButton addTarget:self action:@selector(dismiss:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:imageButton];
+    
+    UIBarButtonItem *seperator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    seperator.width = -10.0f;
+    
+    [self.toolbar setItems:@[seperator, barItem]];
     
     CGRect frame = {0.0f, self.toolbar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height};
+    self.dc.topic_id = self.topic_id;
     self.dc.view.frame = frame;
     [self.view addSubview:self.dc.view];
 }

@@ -10,6 +10,7 @@
 
 #import "IndexViewController.h"
 #import "PersonalViewController.h"
+#import <APNSMsgPresentViewController.h>
 
 @implementation AppDelegate
 
@@ -75,7 +76,8 @@
     NSLog(@"Data From Remove Notification: %@:", userInfo);
     NSString *topic_id = userInfo[@"topic_id"];
     if (topic_id) {
-        
+        /** msg **/
+        [[APNSMsgManager sharedInstance]presentModalViewControllerWith:topic_id];
     }
 }
 

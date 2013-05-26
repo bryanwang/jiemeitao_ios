@@ -64,11 +64,10 @@
 
 - (void)showdetail
 {
-    NSLog(@"show detail");
     DetailTopicViewController *vc = [[DetailTopicViewController alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
-    [((UIViewController *)self.delegate).navigationController pushViewController:vc animated:YES];
     vc.topic_id = [NSString stringWithFormat: @"%@",  self.topic[@"id"]];
+    [((UIViewController *)self.delegate).navigationController pushViewController:vc animated:YES];
 }
 
 - (void) setTopic:(NSDictionary *)topic
@@ -143,11 +142,14 @@
         
     
         //count
-        CGRect r3 = {{0.0f, height}, {CELL_WIDTH, COUNT_VIEW_HEIGHT}};
+        CGRect r3 = {{0.0f, height}, {CELL_WIDTH, COUNT_VIEW_HEIGHT - 1}};
         UIView *cv = [[UIView alloc]initWithFrame:r3];
-        cv.backgroundColor = [UIColor clearColor];
-        CGRect r4 = {36.0f, 14.0f, 250.0f, 20.0f};
+        CALayer *border = [CALayer layer];
+        border.frame = CGRectMake(0.0f, 0.0f, cv.frame.size.width, 1.0f);
+        border.backgroundColor = RGBCOLOR(150, 99, 109).CGColor;
+        [cv.layer addSublayer:border];
         
+        CGRect r4 = {36.0f, 14.0f, 250.0f, 20.0f};
         UIImage *check = [UIImage imageNamed:@"img-check"];
         UIImageView *checkv = [[UIImageView alloc]initWithImage:check];
         checkv.frame = CGRectMake(10.0f, 14.0f, check.size.width, check.size.height);

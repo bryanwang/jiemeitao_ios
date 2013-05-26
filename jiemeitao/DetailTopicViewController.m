@@ -64,15 +64,6 @@
     }];
 }
 
-- (void)setTopic_id:(NSString *)topic_id
-{
-    if (![_topic_id isEqualToString:topic_id]) {
-        _topic_id = topic_id;
-        
-        [self fetchTopicDetail];
-    }
-}
-
 - (void)setTopic:(NSMutableDictionary *)topic
 {
     if (![_topic isEqual:topic]) {
@@ -267,9 +258,9 @@
 - (void)viewDidLoad
 {
     self.title = NSLocalizedString(@"topic detail", "");
-    [self addCustomBackButton];
-    
     [super viewDidLoad];
+    [self addCustomBackButton];
+    [self fetchTopicDetail];
 }
 
 - (void)didReceiveMemoryWarning

@@ -66,7 +66,7 @@
     [super viewDidLoad];
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"nav-bar-logo"]];
     self.tableview.backgroundColor = RGBCOLOR(255, 248, 248);
-    self.tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
 //    [self generateMockData];
     [self fetchData];
 }

@@ -28,8 +28,8 @@
         _receivedInvitationsTableViewController.invitationItemTappedBlock = ^(id invitation) {
             DetailTopicViewController *vc = [[DetailTopicViewController alloc]init];
             vc.hidesBottomBarWhenPushed = YES;
-            [pc.navigationController pushViewController:vc animated:YES];
             vc.topic_id = invitation[@"id"];
+            [pc.navigationController pushViewController:vc animated:YES];
         };
     }
     
