@@ -27,6 +27,7 @@
 
 @implementation DetailTopicViewController {
     float y;
+    NSInteger currentIndex;
 }
 
 
@@ -38,12 +39,18 @@
 
 - (void)likeButtonTapped: (UIButton*)button
 {
-    NSLog(@"like");
+    NSString *topic_id = self.topic_id;
+    NSString *item_id = self.topic[@"items"][currentIndex][@"item_id"];
+    NSLog(@"%@", topic_id);
+    NSLog(@"%@", item_id);
 }
 
 - (void)hateButtonTapped: (UIButton*)button
 {
-    NSLog(@"hate");
+    NSString *topic_id = self.topic_id;
+    NSString *item_id = self.topic[@"items"][currentIndex][@"item_id"];
+    NSLog(@"%@", topic_id);
+    NSLog(@"%@", item_id);
 }
 
 
@@ -58,7 +65,8 @@
         [self initTopicUserAvatar];
         [self initButtons];
         //从第一个开始
-        [self showVotesDetailForItemInIndex:0];
+        currentIndex = 0;
+        [self showVotesDetailForItemInIndex: currentIndex];
     } failure: ^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"error..");
     }];
@@ -148,7 +156,7 @@
     [like addTarget:self action:@selector(likeButtonTapped:) forControlEvents:UIControlEventTouchDown];
     [self.baseScroll addSubview:like];
 
-    if ([self.topic[@"items"] count] > 1) {
+    if ([self.topic[@"items"] count] == 1) {
         CGRect b2 = {APP_CONTENT_WIDTH - 10.0f - 49.0f, self.scrollView.frame.size.height + self.scrollView.frame.origin.y - 49.0f - 10.0f, 49.0f, 49.0f};
         UIButton *unlike = [UIButton buttonWithType:UIButtonTypeCustom];
         unlike.frame = b2;
@@ -294,9 +302,9 @@
 - (void)scrollViewDidEndDecelerating: (UIScrollView *)scrollView
 {
     CGFloat pageWidth = self.scrollView.frame.size.width;
-    NSInteger page = (NSInteger)floor((self.scrollView.contentOffset.x - pageWidth/2) / pageWidth) + 1;
-    self.pageControl.currentPage = page;
-    [self showVotesDetailForItemInIndex:page];
+    currentIndex = (NSInteger)floor((self.scrollView.contentOffset.x - pageWidth/2) / pageWidth) + 1;
+    self.pageControl.currentPage = currentIndex;
+    [self showVotesDetailForItemInIndex:currentIndex];
 }
 
 
